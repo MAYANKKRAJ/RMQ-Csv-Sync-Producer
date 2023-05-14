@@ -3,6 +3,8 @@ package com.csv.sync.producer.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,11 +21,11 @@ import com.opencsv.exceptions.CsvException;
 
 @Service
 public class SyncEmployeeCsv {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CSVReaderFactory.class);
+	
 	@Autowired
 	private final CSVReaderFactory csvReaderFactory;
-	
-	@Value(value = "${spring.web.resources.static-locations}")
-    private String employeeCsvFile;
 	
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -36,7 +38,7 @@ public class SyncEmployeeCsv {
     }
 	
 	public void readEmployeeCsv() throws IOException {
-	    CSVReader csvReader = csvReaderFactory.getEmployeeCsvReader();
+	    CSVReader csvReader = csvReaderFactory.loadCsvFilePath("Employee.csv");
 
 	    CsvToBean<Employee> csvToBean = new CsvToBeanBuilder<Employee>(csvReader)
 	            .withMappingStrategy(mappingStrategy)
@@ -45,8 +47,11 @@ public class SyncEmployeeCsv {
 	    List<Employee> employees = csvToBean.parse();
 
 	    for (Employee employee : employees) {
+	    	LOGGER.info("mapping the object in json");
 	    	String employeeJson = new ObjectMapper().writeValueAsString(employee);
+	    	LOGGER.info("publishing the employeeJson ID {} to payload", employee.getEmployeeId());
 	    	rabbitTemplate.convertAndSend("employee.queue",employeeJson);
+	    	LOGGER.info("published the employeeJson ID {} to payload", employee.getEmployeeId());
 	    }
 	}
 }

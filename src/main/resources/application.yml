@@ -1,14 +1,20 @@
-#rabbitmq configuration
+# rabbitmq configuration
 spring:
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
-  web:
-    resources:
-      static-locations: "Employee.csv"
+# loading the csv files    
+csv:
+  files:
+    - Employee.csv
+    - SalesInfo.csv
+    - Student.csv
     
-# csv file name and path
-
-  
+# Logging properties.
+logging:
+  file:
+     # Log file path.
+     path: /opt/app/log/
+    
