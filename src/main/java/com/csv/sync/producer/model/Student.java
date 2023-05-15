@@ -1,6 +1,7 @@
 package com.csv.sync.producer.model;
 
 public class Student {
+	
 	private String studentId;
     private String studentName;
     private String studentEmail;

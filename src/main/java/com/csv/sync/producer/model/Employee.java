@@ -1,11 +1,7 @@
 package com.csv.sync.producer.model;
 
-import java.io.Serializable;
-
-import org.springframework.stereotype.Component;
-
-@Component
 public class Employee{
+	
 	private String employeeId;
 	private String empName;
 	private String empDepartment;
