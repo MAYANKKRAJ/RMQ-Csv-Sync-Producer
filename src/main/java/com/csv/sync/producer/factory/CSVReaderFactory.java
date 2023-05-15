@@ -1,6 +1,5 @@
 package com.csv.sync.producer.factory;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -9,8 +8,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -36,7 +33,7 @@ public class CSVReaderFactory {
             Resource resource = new ClassPathResource(file);
             csvReader = new CSVReader(new InputStreamReader(resource.getInputStream()));
             csvReaders.put(file, csvReader);
-            LOGGER.info("CSVReader instance creatd for file: {}", file);
+            LOGGER.info("CSVReader instance created for file: {}", file);
         }
         return csvReader;
     }

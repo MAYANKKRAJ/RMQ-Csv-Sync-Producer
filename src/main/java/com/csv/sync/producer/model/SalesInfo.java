@@ -1,6 +1,7 @@
 package com.csv.sync.producer.model;
 
 public class SalesInfo {
+	
 	private String timestamp;
     private String ver;
     private String productFamily;
